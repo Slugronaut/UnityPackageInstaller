@@ -8,7 +8,7 @@ namespace Symlink_RepoClone_Installer
     /// <summary>
     /// Helper class with a few static methods for finding directories containing package files and parsing them.
     /// </summary>
-    public static class PackageParser
+    public static class PackageUtility
     {
         public static readonly string PackageFilename = "package.json";
 

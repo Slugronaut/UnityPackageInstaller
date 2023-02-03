@@ -68,9 +68,9 @@ namespace Symlink_RepoClone_Installer
                     {
                         bool result;
                         if (comboBoxCopyMethod.SelectedIndex == (int)CopyMethods.SymLink)
-                            result = PackageParser.LinkPackageToDestination(package, diag.SelectedPath);
+                            result = PackageUtility.LinkPackageToDestination(package, diag.SelectedPath);
                         else if (comboBoxCopyMethod.SelectedIndex == (int)CopyMethods.Copy)
-                            result = PackageParser.CopyPackageToDestination(package, diag.SelectedPath);
+                            result = PackageUtility.CopyPackageToDestination(package, diag.SelectedPath);
                         else throw new NotifyUserException("Unknown copy method detected.");
 
                         if(result)

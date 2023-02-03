@@ -23,8 +23,8 @@ namespace Symlink_RepoClone_Installer
             if (string.IsNullOrEmpty(SrcPath))
                 throw new NotifyUserException("Please select a directory to scan for packages.");
 
-            foreach (var dir in PackageParser.ScanForPackageFiles(SrcPath))
-                Packages.Add(PackageParser.ParsePackageJson(dir, PackageParser.PackageFilename));
+            foreach (var dir in PackageUtility.ScanForPackageFiles(SrcPath))
+                Packages.Add(PackageUtility.ParsePackageJson(dir, PackageUtility.PackageFilename));
 
 
         }
