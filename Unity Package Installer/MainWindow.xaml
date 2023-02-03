@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Symlink_RepoClone_Installer"
         mc:Ignorable="d"
-        Title="Unity Package Installer" Height="458" Width="543" Background="#FF353B40">
+        Title="Unity Package Installer" Height="458" Width="543" Background="#FF353B40" MinWidth="480" MinHeight="320">
     <Window.DataContext>
         <local:ModelPresenter x:Name="ModelView"></local:ModelPresenter>
     </Window.DataContext>
@@ -19,7 +19,7 @@
                 <DataGridTemplateColumn Header="Selected" Width="64">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" Unchecked="OnPackageSelectedUnchecked" Checked="OnPackageSelectedChecked" IsChecked="{Binding Path=Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -28,7 +28,12 @@
                 <DataGridTextColumn IsReadOnly="true" Header="Source Path" Width="*" Binding="{Binding Path=SrcPath}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="button2" Content="Link To Destination" HorizontalAlignment="Center" Margin="0,0,0,27" Width="151" Click="OnClickLinkButton" Height="20" VerticalAlignment="Bottom"/>
+        <Button x:Name="button2" Content="Link To Destination" Margin="0,0,10,26" Click="OnClickLinkButton" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="151"/>
         <Label x:Name="label_Copy" Content="Discoverd Packages" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <ComboBox x:Name="comboBoxCopyMethod" Margin="104,0,0,25" SelectedIndex="0" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="168">
+            <ComboBoxItem Content="Symlink"/>
+            <ComboBoxItem Content="Copy Files"/>
+        </ComboBox>
+        <Label x:Name="label_Copy1" Content="Install Method:" HorizontalAlignment="Left" Margin="10,0,0,24" Foreground="White" Height="26" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

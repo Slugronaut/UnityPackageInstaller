@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
 using System.IO;
 
@@ -76,6 +73,26 @@ namespace Symlink_RepoClone_Installer
 
             if(package.Selected)
                 Directory.CreateSymbolicLink(destSubPath, package.SrcPath);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="package"></param>
+        /// <param name="destPath"></param>
+        public static void CopyPackageToDestination(Package package, string destPath)
+        {
+            if (package == null) throw new NotifyUserException("Invalid package object.");
+            if (string.IsNullOrEmpty(package.SrcPath)) throw new NotifyUserException($"The package '{package.name}' has an empty source path.");
+            if (string.IsNullOrEmpty(destPath)) throw new NotifyUserException("A destination path must be provided.");
+
+            string packageDir = package.SrcPath.Substring(package.SrcPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+            if (string.IsNullOrEmpty(packageDir)) throw new Exception($"The package '{package.name}' has an invalid source path. It should not end with a '{Path.DirectorySeparatorChar}' symbol.");
+
+            string destSubPath = Path.Combine(destPath, packageDir);
+
+            if (package.Selected)
+                new Microsoft.VisualBasic.Devices.Computer().FileSystem.CopyDirectory(package.SrcPath, destSubPath);
         }
     }
 }

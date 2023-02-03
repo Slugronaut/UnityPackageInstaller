@@ -1,8 +1,6 @@
 ﻿using Ookii.Dialogs.Wpf;
 using System;
-using System.IO;
 using System.Windows;
-using System.Windows.Navigation;
 
 namespace Symlink_RepoClone_Installer
 {
@@ -11,6 +9,11 @@ namespace Symlink_RepoClone_Installer
     /// </summary>
     public partial class MainWindow : Window
     {
+        enum CopyMethods
+        {
+            SymLink,
+            Copy,
+        }
 
         public MainWindow()
         {
@@ -63,7 +66,12 @@ namespace Symlink_RepoClone_Installer
                 {
                     try
                     {
-                        PackageParser.LinkPackageToDestination(package, diag.SelectedPath);
+                        if (comboBoxCopyMethod.SelectedIndex == (int)CopyMethods.SymLink)
+                            PackageParser.LinkPackageToDestination(package, diag.SelectedPath);
+                        else if (comboBoxCopyMethod.SelectedIndex == (int)CopyMethods.Copy)
+                            PackageParser.CopyPackageToDestination(package, diag.SelectedPath);
+                        else throw new NotifyUserException("Unknown copy method detected.");
+
                         counter++;
                     }
                     catch (Exception e)
@@ -101,9 +109,35 @@ namespace Symlink_RepoClone_Installer
                 }//end foreach
             }
 
-            MessageBox.Show($"Package linking complete. Total packages linked is {counter}.");
+            MessageBox.Show($"Package installation complete.\n\nTotal packages installed is {counter}.");
         }
 
+        /// <summary>
+        /// Invoked whenever the user checks a box on a package row.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnPackageSelectedChecked(object sender, RoutedEventArgs e)
+        {
+            //TODO:
+            //-check for dependencies
+            //-show warning if any found
+            //-check them as well if user agrees (avoid recursive messages to this handler)
+
+        }
+
+        /// <summary>
+        /// Invoked whenever the user unchecks a box on a package row.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnPackageSelectedUnchecked(object sender, RoutedEventArgs e)
+        {
+            //TODO:
+            //-check to see if anything depends on this
+            //-display warning if they do
+            //-uncheck those packages as well if the user decides to continue (avoid recursive messages to this handler)
+        }
     }
 
 
