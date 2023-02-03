@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Symlink_RepoClone_Installer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="458" Width="543" Background="#FF353B40">
+        Title="Unity Package Installer" Height="458" Width="543" Background="#FF353B40">
     <Window.DataContext>
         <local:ModelPresenter x:Name="ModelView"></local:ModelPresenter>
     </Window.DataContext>
@@ -13,9 +13,8 @@
         <Label x:Name="label" Content="Source Directory:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="White"/>
         <Button x:Name="button" Content="..." Margin="0,13,10,0" VerticalAlignment="Top" Click="OnClickFolderSelectButton" HorizontalAlignment="Right" Width="29"/>
         <TextBox x:Name="textBox" Margin="110,14,44,0" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=SrcPath}" Height="18" VerticalAlignment="Top" />
-        <Button x:Name="button1" Content="Scan" Margin="0,61,10,0" VerticalAlignment="Top" Click="OnClickScanButton" HorizontalAlignment="Right" Width="87"/>
 
-        <DataGrid x:Name="dataGrid" CanUserAddRows="false" CanUserDeleteRows="false" Margin="10,86,10,67" AutoGenerateColumns="false" ItemsSource="{Binding Packages, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+        <DataGrid x:Name="dataGrid" CanUserAddRows="false" CanUserDeleteRows="false" Margin="10,75,10,67" AutoGenerateColumns="false" ItemsSource="{Binding Packages, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Selected" Width="64">
                     <DataGridTemplateColumn.CellTemplate>
@@ -30,5 +29,6 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="button2" Content="Link To Destination" HorizontalAlignment="Center" Margin="0,0,0,27" Width="151" Click="OnClickLinkButton" Height="20" VerticalAlignment="Bottom"/>
+        <Label x:Name="label_Copy" Content="Discoverd Packages" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Foreground="White"/>
     </Grid>
 </Window>

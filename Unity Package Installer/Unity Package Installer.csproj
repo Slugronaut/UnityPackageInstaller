@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <RootNamespace>Symlink_RepoClone_Installer</RootNamespace>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <RootNamespace>UnityPackageInstaller</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
