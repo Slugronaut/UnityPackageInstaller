@@ -66,13 +66,15 @@ namespace Symlink_RepoClone_Installer
                 {
                     try
                     {
+                        bool result;
                         if (comboBoxCopyMethod.SelectedIndex == (int)CopyMethods.SymLink)
-                            PackageParser.LinkPackageToDestination(package, diag.SelectedPath);
+                            result = PackageParser.LinkPackageToDestination(package, diag.SelectedPath);
                         else if (comboBoxCopyMethod.SelectedIndex == (int)CopyMethods.Copy)
-                            PackageParser.CopyPackageToDestination(package, diag.SelectedPath);
+                            result = PackageParser.CopyPackageToDestination(package, diag.SelectedPath);
                         else throw new NotifyUserException("Unknown copy method detected.");
 
-                        counter++;
+                        if(result)
+                            counter++;
                     }
                     catch (Exception e)
                     {

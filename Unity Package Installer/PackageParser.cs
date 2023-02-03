@@ -24,7 +24,9 @@ namespace Symlink_RepoClone_Installer
             try
             {
                 string txt = File.ReadAllText(Path.Combine(directoryPath, fileName));
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 output = JsonSerializer.Deserialize<Package>(txt);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             }
             catch(Exception e)
             {
@@ -60,27 +62,7 @@ namespace Symlink_RepoClone_Installer
         /// </summary>
         /// <param name="package"></param>
         /// <param name="destPath"></param>
-        public static void LinkPackageToDestination(Package package, string destPath)
-        {
-            if (package == null) throw new NotifyUserException("Invalid package object.");
-            if (string.IsNullOrEmpty(package.SrcPath)) throw new NotifyUserException($"The package '{package.name}' has an empty source path.");
-            if (string.IsNullOrEmpty(destPath)) throw new NotifyUserException("A destination path must be provided.");
-
-            string packageDir = package.SrcPath.Substring(package.SrcPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-            if (string.IsNullOrEmpty(packageDir)) throw new Exception($"The package '{package.name}' has an invalid source path. It should not end with a '{Path.DirectorySeparatorChar}' symbol.");
-
-            string destSubPath = Path.Combine(destPath, packageDir);
-
-            if(package.Selected)
-                Directory.CreateSymbolicLink(destSubPath, package.SrcPath);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="package"></param>
-        /// <param name="destPath"></param>
-        public static void CopyPackageToDestination(Package package, string destPath)
+        public static bool LinkPackageToDestination(Package package, string destPath)
         {
             if (package == null) throw new NotifyUserException("Invalid package object.");
             if (string.IsNullOrEmpty(package.SrcPath)) throw new NotifyUserException($"The package '{package.name}' has an empty source path.");
@@ -92,7 +74,35 @@ namespace Symlink_RepoClone_Installer
             string destSubPath = Path.Combine(destPath, packageDir);
 
             if (package.Selected)
+            {
+                Directory.CreateSymbolicLink(destSubPath, package.SrcPath);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="package"></param>
+        /// <param name="destPath"></param>
+        public static bool CopyPackageToDestination(Package package, string destPath)
+        {
+            if (package == null) throw new NotifyUserException("Invalid package object.");
+            if (string.IsNullOrEmpty(package.SrcPath)) throw new NotifyUserException($"The package '{package.name}' has an empty source path.");
+            if (string.IsNullOrEmpty(destPath)) throw new NotifyUserException("A destination path must be provided.");
+
+            string packageDir = package.SrcPath.Substring(package.SrcPath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+            if (string.IsNullOrEmpty(packageDir)) throw new Exception($"The package '{package.name}' has an invalid source path. It should not end with a '{Path.DirectorySeparatorChar}' symbol.");
+
+            string destSubPath = Path.Combine(destPath, packageDir);
+
+            if (package.Selected)
+            {
                 new Microsoft.VisualBasic.Devices.Computer().FileSystem.CopyDirectory(package.SrcPath, destSubPath);
+                return true;
+            }
+            return false;
         }
     }
 }
