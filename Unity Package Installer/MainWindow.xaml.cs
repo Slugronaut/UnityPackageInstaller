@@ -1,6 +1,11 @@
 ﻿using Ookii.Dialogs.Wpf;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Xps.Serialization;
 
 namespace Symlink_RepoClone_Installer
 {
@@ -43,7 +48,7 @@ namespace Symlink_RepoClone_Installer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClickLinkButton(object sender, RoutedEventArgs args)
+        private void OnClickInstallButton(object sender, RoutedEventArgs args)
         {
             if(string.IsNullOrEmpty(ModelView.SrcPath))
             {
@@ -119,13 +124,104 @@ namespace Symlink_RepoClone_Installer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnPackageSelectedChecked(object sender, RoutedEventArgs e)
+        private void OnPackageCheckboxClicked(object sender, RoutedEventArgs e)
         {
-            //TODO:
-            //-check for dependencies
-            //-show warning if any found
-            //-check them as well if user agrees (avoid recursive messages to this handler)
+            var checkBox = sender as System.Windows.Controls.CheckBox;
+            int index = dataGrid.SelectedIndex;
+            if (checkBox == null || index < 0 || index > ModelView.Packages.Count)
+                return;
+            var selectedPackage = ModelView.Packages[index];
 
+            if (checkBox.IsChecked == true)
+            {
+                //CHECKED
+                //-check for dependencies of this package
+                //-show warning if any found
+                //-check them as well if user agrees (avoid recursive messages to this handler)
+
+                var deps = ModelView.DependenciesOf(selectedPackage).ToList();
+                if(deps != null && deps.Count > 0 && deps.Any(x => !x.Selected))
+                {
+                    using(var diag = new Ookii.Dialogs.Wpf.TaskDialog())
+                    {
+                        var cancelButton = new TaskDialogButton("Cancel");
+                        var selectAllButton = new TaskDialogButton("Install All");
+                        var selectOneButton = new TaskDialogButton(("Just this One"));
+
+                        diag.Buttons.Add(cancelButton);
+                        diag.Buttons.Add(selectAllButton);
+                        diag.Buttons.Add(selectOneButton);
+                        diag.Content = $"The package '{selectedPackage.name}' has one or more dependencies. Do you want to install all of them as well?";
+                        var result = diag.ShowDialog(this);
+                        if(result == cancelButton)
+                        {
+                            checkBox.IsChecked = false;
+                            e.Handled = true;
+                            return;
+                        }
+                        else if(result == selectAllButton)
+                        {
+                            foreach(var dep in deps)
+                                dep.Selected = true;
+                            dataGrid.Items.Refresh();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //UNCHECKED
+                //-check to see if anything depends on this
+                //-display warning if they do
+                //-uncheck those packages as well if the user decides to continue (avoid recursive messages to this handler)
+
+                var deps = ModelView.DependentOn(ModelView.Packages[index]).ToList();
+                if (deps != null && deps.Count > 0 && deps.Any(x => x.Selected))
+                {
+                    using (var diag = new Ookii.Dialogs.Wpf.TaskDialog())
+                    {
+                        var cancelButton = new TaskDialogButton("Cancel");
+                        var selectAllButton = new TaskDialogButton("Un-innstall All");
+                        var selectOneButton = new TaskDialogButton(("Just this One"));
+
+                        diag.Buttons.Add(cancelButton);
+                        diag.Buttons.Add(selectAllButton);
+                        diag.Buttons.Add(selectOneButton);
+                        diag.Content = $"The package '{selectedPackage.name}' has one or more dependencies. Do you want to un-install all of them as well?";
+                        var result = diag.ShowDialog(this);
+                        if (result == cancelButton)
+                        {
+                            checkBox.IsChecked = true;
+                            e.Handled = true;
+                            return;
+                        }
+                        else if (result == selectAllButton)
+                        {
+                            foreach (var dep in deps)
+                                dep.Selected = false;
+                            dataGrid.Items.Refresh();
+                        }
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Enumerates all checkboxes associated with each package.
+        /// </summary>
+        /// <param name="packages"></param>
+        /// <returns></returns>
+        IEnumerable<CheckBox> PackageCheckboxes(IEnumerable<Package> packages)
+        {
+            var rows = dataGrid.Items.OfType<CheckBox>();
+            foreach (var package in packages)
+            {
+                foreach(var row in rows) 
+                {
+                    yield return null;
+                }
+            }
         }
 
         /// <summary>
@@ -136,9 +232,6 @@ namespace Symlink_RepoClone_Installer
         private void OnPackageSelectedUnchecked(object sender, RoutedEventArgs e)
         {
             //TODO:
-            //-check to see if anything depends on this
-            //-display warning if they do
-            //-uncheck those packages as well if the user decides to continue (avoid recursive messages to this handler)
         }
     }
 

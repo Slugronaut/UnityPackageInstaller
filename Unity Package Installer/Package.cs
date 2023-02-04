@@ -13,7 +13,7 @@ namespace Symlink_RepoClone_Installer
         public string? name { get; set; }
         public string? displayName { get; set; }
         public string? description { get; set; }
-        public Dictionary<string, string>? dependencies { get; set; }
+        public Dictionary<string, string>? dependencies { get; set; } = new();
         #endregion
 
 

@@ -19,7 +19,7 @@
                 <DataGridTemplateColumn Header="Selected" Width="64">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" Unchecked="OnPackageSelectedUnchecked" Checked="OnPackageSelectedChecked" IsChecked="{Binding Path=Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" Click="OnPackageCheckboxClicked" IsChecked="{Binding Path=Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -28,7 +28,7 @@
                 <DataGridTextColumn IsReadOnly="true" Header="Source Path" Width="*" Binding="{Binding Path=SrcPath}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="button2" Content="Link To Destination" Margin="0,0,10,26" Click="OnClickLinkButton" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="151"/>
+        <Button x:Name="button2" Content="Install to Destination" Margin="0,0,10,26" Click="OnClickInstallButton" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="151"/>
         <Label x:Name="label_Copy" Content="Discoverd Packages" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Foreground="White"/>
         <ComboBox x:Name="comboBoxCopyMethod" Margin="104,0,0,25" SelectedIndex="0" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="168">
             <ComboBoxItem Content="Symlink"/>

@@ -63,6 +63,26 @@ namespace Symlink_RepoClone_Installer
 
         }
 
+        /// <summary>
+        /// Returns an enumeratable list of all packages the given package is dependent on.
+        /// It can only return dependencies that are currently present in the model.
+        /// </summary>
+        /// <param name="package"></param>
+        /// <returns></returns>
+        public IEnumerable<Package> DependenciesOf(Package package)
+        {
+            return Model.DependenciesOf(package);
+        }
+
+        /// <summary>
+        /// Returns an enumerablelist of all packages that are dependent on the given package.
+        /// </summary>
+        /// <param name="packages"></param>
+        /// <returns></returns>
+        public IEnumerable<Package> DependentOn(Package package)
+        {
+            return Model.DependentOn(package);
+        }
 
     }
 }
