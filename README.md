@@ -8,8 +8,13 @@ This tool was developed as a quick and dirty workaround for the first issue. Rat
 
 This app was developed for WPF using .NET 7
 
+# Unity Warnings
+Unity does not recommend the use of Symlinked files and folders. And for good reason. If you are careful and know exactly what you are doing it will work. But if you are not sure then there is an option to simply copy the files rather than create symlinks.
+
 # Future
-Eventually I'd like to also provide a means of handling dependencies but that will for a later time.
+Dependencies are now supported when they are included in the list of packages being scanned. However, there is currently now way to resolve external dependencies either on the local machine or online. If I can think of a good way to do this I'll implement it. It will likely require extra package info.
+
+I'd also like to create a package collections system whereby you can provide a set of packages under a single entry that can be installed or uninstalled all in a single click.
 
 
 # Dependencies:  
