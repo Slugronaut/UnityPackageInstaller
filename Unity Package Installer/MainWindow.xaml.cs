@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Xps.Serialization;
+using Toolbox;
 
 namespace Symlink_RepoClone_Installer
 {
@@ -20,8 +21,12 @@ namespace Symlink_RepoClone_Installer
             Copy,
         }
 
+        public static readonly string LastSrcDirConfigId = "LastSrcDir";
+        public static readonly string LastDestDirConfigId = "LastDestDir";
+
         public MainWindow()
         {
+            Config.LoadConfig();
             InitializeComponent();
             this.DataContext = ModelView;
         }
@@ -34,8 +39,14 @@ namespace Symlink_RepoClone_Installer
         private void OnClickFolderSelectButton(object sender, RoutedEventArgs args)
         {
             var diag = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog { Multiselect = false };
+
+            string? defDir = Config.ReadConfigStr(LastSrcDirConfigId);
+            if (defDir != null)
+                diag.SelectedPath = defDir;
             if (diag.ShowDialog(this) == true)
             {
+                Config.WriteConfigStr(LastSrcDirConfigId, diag.SelectedPath);
+                Config.SaveConfig();
                 ModelView.SrcPath = diag.SelectedPath;
                 ModelView.ScanForPackages();
             }
@@ -64,9 +75,14 @@ namespace Symlink_RepoClone_Installer
 
             int counter = 0;
             var diag = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog { Multiselect = false };
+            string? defDir = Config.ReadConfigStr(LastDestDirConfigId);
+            if (defDir != null)
+                diag.SelectedPath = defDir;
             if (diag.ShowDialog(this) == true)
             {
                 bool skipAll = false;
+                Config.WriteConfigStr(LastDestDirConfigId, diag.SelectedPath);
+                Config.SaveConfig();
                 foreach (var package in ModelView.Packages)
                 {
                     try
