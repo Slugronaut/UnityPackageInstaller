@@ -14,7 +14,7 @@
         <Button x:Name="button" Content="..." Margin="0,13,10,0" VerticalAlignment="Top" Click="OnClickFolderSelectButton" HorizontalAlignment="Right" Width="29"/>
         <TextBox x:Name="textBox" Margin="110,14,44,0" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=SrcPath}" Height="18" VerticalAlignment="Top" />
 
-        <DataGrid x:Name="dataGrid" CanUserAddRows="false" CanUserDeleteRows="false" Margin="10,75,10,67" AutoGenerateColumns="false" ItemsSource="{Binding Packages, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+        <DataGrid x:Name="dataGrid" CanUserAddRows="false" CanUserDeleteRows="false" Margin="10,75,10,67" AutoGenerateColumns="false" ItemsSource="{Binding Packages, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" AlternatingRowBackground="#FF9A9A9A" AlternationCount="1">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Selected" Width="64">
                     <DataGridTemplateColumn.CellTemplate>
@@ -35,5 +35,6 @@
             <ComboBoxItem Content="Copy Files"/>
         </ComboBox>
         <Label x:Name="label_Copy1" Content="Install Method:" HorizontalAlignment="Left" Margin="10,0,0,24" Foreground="White" Height="26" VerticalAlignment="Bottom"/>
+        <CheckBox x:Name="checkBox" Content="CheckBox" HorizontalAlignment="Left" Margin="152,55,0,0" VerticalAlignment="Top" Checked="checkBox_Checked" Unchecked="checkBox_Checked"/>
     </Grid>
 </Window>

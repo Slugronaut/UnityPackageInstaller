@@ -3,9 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Xps.Serialization;
 using Toolbox;
 
 namespace Symlink_RepoClone_Installer
@@ -48,6 +48,7 @@ namespace Symlink_RepoClone_Installer
                 Config.WriteConfigStr(LastSrcDirConfigId, diag.SelectedPath);
                 Config.SaveConfig();
                 ModelView.SrcPath = diag.SelectedPath;
+                this.checkBox.IsChecked = true;
                 ModelView.ScanForPackages();
             }
             
@@ -248,6 +249,21 @@ namespace Symlink_RepoClone_Installer
         private void OnPackageSelectedUnchecked(object sender, RoutedEventArgs e)
         {
             //TODO:
+        }
+
+        /// <summary>
+        /// Invoked when the CheckAll box is toggled.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            var checkBox = sender as System.Windows.Controls.CheckBox;
+
+            foreach(var package in ModelView.Packages)
+                package.Selected = (bool)(checkBox?.IsChecked);
+
+            dataGrid.Items.Refresh();
         }
     }
 
